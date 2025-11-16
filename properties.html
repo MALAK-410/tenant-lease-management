@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>Property Catalogue</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="auth.html">Authentication</a>
+<a href="properties.html">Properties</a>
+<a href="lease.html">Lease</a>
+<a href="payments.html">Payments</a>
+<a href="maintenance.html">Maintenance</a>
+<a href="reviews.html">Reviews</a>
+<a href="analytics.html">Analytics</a>
+<a href="communication.html">Communication</a>
+</nav>
+
+<div class="container">
+<h1>Property Catalogue</h1>
+
+<input id="pname" placeholder="Property Name">
+<input id="ploc" placeholder="Location">
+<input id="prent" placeholder="Monthly Rent">
+
+<button onclick="addProperty()">Add Property</button>
+
+<h2>Available Properties</h2>
+<ul id="plist"></ul>
+</div>
+
+<script>
+let properties = JSON.parse(localStorage.getItem("properties")) || [];
+
+function renderProperties() {
+    let ul = document.getElementById("plist");
+    ul.innerHTML = "";
+    properties.forEach((p,i)=>{
+        let li = document.createElement("li");
+        li.innerHTML = p.name + " - " + p.location + " - ₹" + p.rent;
+        let del = document.createElement("button");
+        del.innerHTML = "Delete";
+        del.onclick = () => { properties.splice(i,1); saveProperties(); renderProperties(); };
+        li.appendChild(del);
+        ul.appendChild(li);
+    });
+}
+
+function saveProperties() {
+    localStorage.setItem("properties", JSON.stringify(properties));
+}
+
+function addProperty() {
+    let name = document.getElementById("pname").value;
+    let loc = document.getElementById("ploc").value;
+    let rent = document.getElementById("prent").value;
+
+    if(name && loc && rent) {
+        properties.push({name:name, location:loc, rent:rent});
+        saveProperties();
+        renderProperties();
+        document.getElementById("pname").value="";
+        document.getElementById("ploc").value="";
+        document.getElementById("prent").value="";
+    } else {
+        alert("Please fill all fields");
+    }
+}
+
+renderProperties();
+</script>
+
+</body>
+</html>

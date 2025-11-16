@@ -1,0 +1,119 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #f5f0c5;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #f5d042;
+}
+
+nav {
+    background-color: #1a1a1a;
+    padding: 12px;
+    text-align: center;
+}
+
+nav a {
+    color: #f5d042;
+    margin: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+nav a:hover {
+    background-color: #f5d042;
+    color: #121212;
+}
+
+.container {
+    width: 85%;
+    margin: 20px auto;
+    background: linear-gradient(145deg, #1a1a1a, #222222);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(245, 208, 66, 0.4);
+}
+
+input, select, textarea {
+    width: 95%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: none;
+}
+
+button {
+    padding: 10px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #f5d042;
+    color: #121212;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #e1b700;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.card {
+    background-color: #1a1a1a;
+    width: 250px;
+    margin: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(245, 208, 66, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(245, 208, 66, 0.5);
+}
+
+.card h2 {
+    color: #f5d042;
+}
+
+.card p {
+    color: #f5f0c5;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background-color: #222222;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+}
+
+li button {
+    background-color: #c8a500;
+    padding: 4px 8px;
+    font-size: 0.9em;
+}
+
+li button:hover {
+    background-color: #e1b700;
+}

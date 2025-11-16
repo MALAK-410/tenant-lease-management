@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>Rent Payments</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="auth.html">Authentication</a>
+<a href="properties.html">Properties</a>
+<a href="lease.html">Lease</a>
+<a href="payments.html">Payments</a>
+<a href="maintenance.html">Maintenance</a>
+<a href="reviews.html">Reviews</a>
+<a href="analytics.html">Analytics</a>
+<a href="communication.html">Communication</a>
+</nav>
+
+<div class="container">
+<h1>Rent Payments</h1>
+
+<input id="tenant" placeholder="Tenant Name">
+<input id="amount" placeholder="Amount Paid">
+
+<button onclick="payRent()">Submit Payment</button>
+
+<h2>Payment Records</h2>
+<ul id="paymentList"></ul>
+</div>
+
+<script>
+let payments = JSON.parse(localStorage.getItem("payments")) || [];
+
+function renderPayments() {
+    let ul = document.getElementById("paymentList");
+    ul.innerHTML = "";
+    payments.forEach((p,i)=>{
+        let li = document.createElement("li");
+        li.innerHTML = p.tenant + " paid ₹" + p.amount;
+        let del = document.createElement("button");
+        del.innerHTML = "Delete";
+        del.onclick=()=>{ payments.splice(i,1); savePayments(); renderPayments(); };
+        li.appendChild(del);
+        ul.appendChild(li);
+    });
+}
+
+function savePayments() {
+    localStorage.setItem("payments", JSON.stringify(payments));
+}
+
+function payRent() {
+    let t = document.getElementById("tenant").value;
+    let a = document.getElementById("amount").value;
+    if(t && a){
+        payments.push({tenant:t, amount:a});
+        savePayments();
+        renderPayments();
+        document.getElementById("tenant").value="";
+        document.getElementById("amount").value="";
+    } else alert("Fill both fields");
+}
+
+renderPayments();
+</script>
+
+</body>
+</html>

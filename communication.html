@@ -1,0 +1,64 @@
+<html>
+<head>
+<title>Communication & Notifications</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="auth.html">Authentication</a>
+<a href="properties.html">Properties</a>
+<a href="lease.html">Lease</a>
+<a href="payments.html">Payments</a>
+<a href="maintenance.html">Maintenance</a>
+<a href="reviews.html">Reviews</a>
+<a href="analytics.html">Analytics</a>
+<a href="communication.html">Communication</a>
+</nav>
+
+<div class="container">
+<h1>Communication & Notifications</h1>
+
+<input id="msg" placeholder="Type a notification">
+<button onclick="sendMessage()">Send</button>
+
+<h2>Sent Messages</h2>
+<ul id="msgList"></ul>
+</div>
+
+<script>
+let messages = JSON.parse(localStorage.getItem("messages")) || [];
+
+function renderMessages(){
+    let ul = document.getElementById("msgList");
+    ul.innerHTML="";
+    messages.forEach((m,i)=>{
+        let li = document.createElement("li");
+        li.innerHTML = m.text;
+        let del = document.createElement("button");
+        del.innerHTML="Delete";
+        del.onclick = ()=>{ messages.splice(i,1); saveMessages(); renderMessages(); };
+        li.appendChild(del);
+        ul.appendChild(li);
+    });
+}
+
+function saveMessages(){
+    localStorage.setItem("messages", JSON.stringify(messages));
+}
+
+function sendMessage(){
+    let t = document.getElementById("msg").value;
+    if(t){
+        messages.push({text:t});
+        saveMessages();
+        renderMessages();
+        document.getElementById("msg").value="";
+    } else alert("Type a message first");
+}
+
+renderMessages();
+</script>
+
+</body>
+</html>

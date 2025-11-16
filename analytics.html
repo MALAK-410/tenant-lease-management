@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Analytics & Reports</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="auth.html">Authentication</a>
+<a href="properties.html">Properties</a>
+<a href="lease.html">Lease</a>
+<a href="payments.html">Payments</a>
+<a href="maintenance.html">Maintenance</a>
+<a href="reviews.html">Reviews</a>
+<a href="analytics.html">Analytics</a>
+<a href="communication.html">Communication</a>
+</nav>
+
+<div class="container">
+<h1>Analytics & Reports</h1>
+
+<button onclick="generateReport()">Generate Summary</button>
+
+<div id="report"></div>
+</div>
+
+<script>
+function generateReport(){
+    let totalProperties = JSON.parse(localStorage.getItem("properties"))?.length || 0;
+    let totalTenants = JSON.parse(localStorage.getItem("users"))?.length || 0;
+    let totalLeases = JSON.parse(localStorage.getItem("leases"))?.length || 0;
+    let pendingPayments = JSON.parse(localStorage.getItem("payments"))?.length || 0;
+    let maintenanceRequests = JSON.parse(localStorage.getItem("requests"))?.length || 0;
+
+    document.getElementById("report").innerHTML = `
+        <p>Total Properties: ${totalProperties}</p>
+        <p>Total Registered Users: ${totalTenants}</p>
+        <p>Active Leases: ${totalLeases}</p>
+        <p>Total Payments Recorded: ${pendingPayments}</p>
+        <p>Maintenance Requests: ${maintenanceRequests}</p>
+    `;
+}
+</script>
+
+</body>
+</html>

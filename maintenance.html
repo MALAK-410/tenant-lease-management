@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>Maintenance Requests</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="auth.html">Authentication</a>
+<a href="properties.html">Properties</a>
+<a href="lease.html">Lease</a>
+<a href="payments.html">Payments</a>
+<a href="maintenance.html">Maintenance</a>
+<a href="reviews.html">Reviews</a>
+<a href="analytics.html">Analytics</a>
+<a href="communication.html">Communication</a>
+</nav>
+
+<div class="container">
+<h1>Maintenance & Service Requests</h1>
+
+<input id="tenant" placeholder="Tenant Name">
+<textarea id="issue" placeholder="Describe the issue"></textarea>
+
+<button onclick="submitRequest()">Submit Request</button>
+
+<h2>Requests</h2>
+<ul id="requestList"></ul>
+</div>
+
+<script>
+let requests = JSON.parse(localStorage.getItem("requests")) || [];
+
+function renderRequests(){
+    let ul = document.getElementById("requestList");
+    ul.innerHTML="";
+    requests.forEach((r,i)=>{
+        let li = document.createElement("li");
+        li.innerHTML = r.tenant + ": " + r.issue;
+        let del = document.createElement("button");
+        del.innerHTML="Delete";
+        del.onclick = ()=>{ requests.splice(i,1); saveRequests(); renderRequests(); };
+        li.appendChild(del);
+        ul.appendChild(li);
+    });
+}
+
+function saveRequests(){
+    localStorage.setItem("requests", JSON.stringify(requests));
+}
+
+function submitRequest(){
+    let t = document.getElementById("tenant").value;
+    let i = document.getElementById("issue").value;
+    if(t && i){
+        requests.push({tenant:t, issue:i});
+        saveRequests();
+        renderRequests();
+        document.getElementById("tenant").value="";
+        document.getElementById("issue").value="";
+    } else alert("Fill all fields");
+}
+
+renderRequests();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>Tenant Reviews</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="auth.html">Authentication</a>
+<a href="properties.html">Properties</a>
+<a href="lease.html">Lease</a>
+<a href="payments.html">Payments</a>
+<a href="maintenance.html">Maintenance</a>
+<a href="reviews.html">Reviews</a>
+<a href="analytics.html">Analytics</a>
+<a href="communication.html">Communication</a>
+</nav>
+
+<div class="container">
+<h1>Tenant Reviews & Feedback</h1>
+
+<input id="name" placeholder="Your Name">
+<textarea id="review" placeholder="Write your feedback"></textarea>
+
+<button onclick="postReview()">Submit Review</button>
+
+<h2>All Reviews</h2>
+<ul id="reviewList"></ul>
+</div>
+
+<script>
+let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+
+function renderReviews(){
+    let ul = document.getElementById("reviewList");
+    ul.innerHTML="";
+    reviews.forEach((r,i)=>{
+        let li = document.createElement("li");
+        li.innerHTML = r.name + ": " + r.feedback;
+        let del = document.createElement("button");
+        del.innerHTML="Delete";
+        del.onclick = ()=>{ reviews.splice(i,1); saveReviews(); renderReviews(); };
+        li.appendChild(del);
+        ul.appendChild(li);
+    });
+}
+
+function saveReviews(){
+    localStorage.setItem("reviews", JSON.stringify(reviews));
+}
+
+function postReview(){
+    let n = document.getElementById("name").value;
+    let f = document.getElementById("review").value;
+    if(n && f){
+        reviews.push({name:n, feedback:f});
+        saveReviews();
+        renderReviews();
+        document.getElementById("name").value="";
+        document.getElementById("review").value="";
+    } else alert("Please fill both fields");
+}
+
+renderReviews();
+</script>
+
+</body>
+</html>

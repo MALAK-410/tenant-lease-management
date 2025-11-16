@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>Lease Management</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="auth.html">Authentication</a>
+<a href="properties.html">Properties</a>
+<a href="lease.html">Lease</a>
+<a href="payments.html">Payments</a>
+<a href="maintenance.html">Maintenance</a>
+<a href="reviews.html">Reviews</a>
+<a href="analytics.html">Analytics</a>
+<a href="communication.html">Communication</a>
+</nav>
+
+<div class="container">
+<h1>Lease Management</h1>
+
+<input id="tenant" placeholder="Tenant Name">
+<input id="property" placeholder="Property Name">
+<input id="duration" placeholder="Duration (months)">
+
+<button onclick="createLease()">Create Lease</button>
+
+<h2>Active Leases</h2>
+<ul id="leases"></ul>
+</div>
+
+<script>
+let leases = JSON.parse(localStorage.getItem("leases")) || [];
+
+function renderLeases() {
+    let ul = document.getElementById("leases");
+    ul.innerHTML = "";
+    leases.forEach((l,i)=>{
+        let li = document.createElement("li");
+        li.innerHTML = l.tenant + " → " + l.property + " (" + l.duration + " months)";
+        let del = document.createElement("button");
+        del.innerHTML = "Delete";
+        del.onclick = ()=>{ leases.splice(i,1); saveLeases(); renderLeases(); };
+        li.appendChild(del);
+        ul.appendChild(li);
+    });
+}
+
+function saveLeases() {
+    localStorage.setItem("leases", JSON.stringify(leases));
+}
+
+function createLease() {
+    let t = document.getElementById("tenant").value;
+    let p = document.getElementById("property").value;
+    let d = document.getElementById("duration").value;
+
+    if(t && p && d){
+        leases.push({tenant:t, property:p, duration:d});
+        saveLeases();
+        renderLeases();
+        document.getElementById("tenant").value="";
+        document.getElementById("property").value="";
+        document.getElementById("duration").value="";
+    } else { alert("Please fill all fields"); }
+}
+
+renderLeases();
+</script>
+
+</body>
+</html>

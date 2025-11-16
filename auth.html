@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>User Authentication</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<nav>
+<a href="index.html">Home</a>
+<a href="auth.html">Authentication</a>
+<a href="properties.html">Properties</a>
+<a href="lease.html">Lease</a>
+<a href="payments.html">Payments</a>
+<a href="maintenance.html">Maintenance</a>
+<a href="reviews.html">Reviews</a>
+<a href="analytics.html">Analytics</a>
+<a href="communication.html">Communication</a>
+</nav>
+
+<div class="container">
+<h1>User Authentication & Role Management</h1>
+
+<input id="username" placeholder="Enter Username">
+<input id="password" type="password" placeholder="Enter Password">
+
+<select id="role">
+<option>Tenant</option>
+<option>Owner</option>
+<option>Admin</option>
+</select>
+
+<button onclick="login()">Login</button>
+
+<h2>Registered Users</h2>
+<ul id="userList"></ul>
+</div>
+
+<script>
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+function renderUsers() {
+    let ul = document.getElementById("userList");
+    ul.innerHTML = "";
+    users.forEach((u, i) => {
+        let li = document.createElement("li");
+        li.innerHTML = u.username + " (" + u.role + ")";
+        let del = document.createElement("button");
+        del.innerHTML = "Delete";
+        del.onclick = () => { users.splice(i,1); saveUsers(); renderUsers(); };
+        li.appendChild(del);
+        ul.appendChild(li);
+    });
+}
+
+function saveUsers() {
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+function login() {
+    let uname = document.getElementById("username").value;
+    let pwd = document.getElementById("password").value;
+    let role = document.getElementById("role").value;
+
+    if(uname && pwd) {
+        users.push({username: uname, password: pwd, role: role});
+        saveUsers();
+        renderUsers();
+        alert("User "+uname+" ("+role+") registered successfully!");
+        document.getElementById("username").value="";
+        document.getElementById("password").value="";
+    } else {
+        alert("Please fill all fields");
+    }
+}
+
+renderUsers();
+</script>
+
+</body>
+</html>
