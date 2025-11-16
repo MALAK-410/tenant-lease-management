@@ -1,74 +1,60 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>Property Catalogue</title>
+<title>Property Catalogue with AJAX</title>
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+
 <nav>
-<a href="index.html">Home</a>
-<a href="auth.html">Authentication</a>
-<a href="properties.html">Properties</a>
-<a href="lease.html">Lease</a>
-<a href="payments.html">Payments</a>
-<a href="maintenance.html">Maintenance</a>
-<a href="reviews.html">Reviews</a>
-<a href="analytics.html">Analytics</a>
-<a href="communication.html">Communication</a>
+<a href="#">Home</a>
+<a href="#">Properties</a>
 </nav>
 
 <div class="container">
 <h1>Property Catalogue</h1>
-
-<input id="pname" placeholder="Property Name">
-<input id="ploc" placeholder="Location">
-<input id="prent" placeholder="Monthly Rent">
-
-<button onclick="addProperty()">Add Property</button>
-
-<h2>Available Properties</h2>
-<ul id="plist"></ul>
+<button onclick="loadProperties()">Load Properties</button>
+<div id="propertyList"></div>
 </div>
 
 <script>
-let properties = JSON.parse(localStorage.getItem("properties")) || [];
+const simulatedData = [
+    {"name": "Ocean View Apartment", "location": "Kannur", "rent": 12000},
+    {"name": "City Center Flat", "location": "Thalassery", "rent": 10000},
+    {"name": "Cozy Villa", "location": "Payyannur", "rent": 15000}
+];
 
-function renderProperties() {
-    let ul = document.getElementById("plist");
-    ul.innerHTML = "";
-    properties.forEach((p,i)=>{
-        let li = document.createElement("li");
-        li.innerHTML = p.name + " - " + p.location + " - ₹" + p.rent;
-        let del = document.createElement("button");
-        del.innerHTML = "Delete";
-        del.onclick = () => { properties.splice(i,1); saveProperties(); renderProperties(); };
-        li.appendChild(del);
-        ul.appendChild(li);
+function loadProperties() {
+    let xhr = new XMLHttpRequest();
+    let url = "properties.json";
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState === 4) {
+            let status = Math.random() < 0.9 ? 200 : 404;
+            if(status === 200) {
+                renderProperties(simulatedData);
+            } else if(status === 404) {
+                document.getElementById("propertyList").innerHTML = "<p>Data not found (404)</p>";
+            } else if(status === 500) {
+                document.getElementById("propertyList").innerHTML = "<p>Server error (500)</p>";
+            } else {
+                document.getElementById("propertyList").innerHTML = "<p>Error: Status " + status + "</p>";
+            }
+        }
+    };
+    xhr.send();
+}
+
+function renderProperties(properties) {
+    let container = document.getElementById("propertyList");
+    container.innerHTML = "";
+    properties.forEach(p => {
+        let div = document.createElement("div");
+        div.className = "property-card";
+        div.innerHTML = `<strong>${p.name}</strong><br>Location: ${p.location}<br>Rent: ₹${p.rent}`;
+        container.appendChild(div);
     });
 }
-
-function saveProperties() {
-    localStorage.setItem("properties", JSON.stringify(properties));
-}
-
-function addProperty() {
-    let name = document.getElementById("pname").value;
-    let loc = document.getElementById("ploc").value;
-    let rent = document.getElementById("prent").value;
-
-    if(name && loc && rent) {
-        properties.push({name:name, location:loc, rent:rent});
-        saveProperties();
-        renderProperties();
-        document.getElementById("pname").value="";
-        document.getElementById("ploc").value="";
-        document.getElementById("prent").value="";
-    } else {
-        alert("Please fill all fields");
-    }
-}
-
-renderProperties();
 </script>
 
 </body>
